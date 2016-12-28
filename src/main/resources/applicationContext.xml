@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:task="http://www.springframework.org/schema/task"  
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+            http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+	<!-- 仅用于springframework测试，DriverManagerDataSource不提供数据库连接池服务 -->
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean> -->
+    <!-- 基于容器JNDI 的数据库连接池配置 -->
+    <!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean" lazy-init="true">
+       <property  name="jndiName" value="jdbc/webDemo-mysql" />
+       <property name="resourceRef" value="true" />
+	</bean> -->
+    <!-- 数据库连接池配置 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	    <property name="driverClassName" value="${jdbc.driverClassName}"/>
+	    <property name="url" value="${jdbc.url}"/>
+	    <property name="username" value="${jdbc.username}"/>
+	    <property name="password" value="${jdbc.password}"/>
+	</bean> 
+	<!-- 数据连接配置 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    
+    <!-- 配置事物 -->
+    <!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean> -->
+	<!-- 配置Hibernate事务管理器 -->
+    <bean id="transactionManager"
+            class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="hqlSessionFactory"/>
+    </bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	 
+    <!-- mybatis集成配置  -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	  	<property name="dataSource" ref="dataSource" />
+	  	<!-- 指定实体包路径 -->
+        <property name="typeAliasesPackage" value="com.mqm.biz.model" />
+	</bean>
+	<!--MapperScannerConfigurer方式 配置mybatis映射扫描的包路径 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.mqm.biz.mapper"/>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+	</bean>
+	<!--mybatis:scan方式配置mybatis映射扫描的包路径 -->
+	<!-- <mybatis:scan base-package="com.mqm.biz.mapper" /> -->
+	
+	<!-- hibernate 配置 -->  
+	<bean id="hqlSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+			<!-- oracle hibernate.dialect=org.hibernate.dialect.OracleDialect -->
+            <value>
+            	hibernate.dialect=org.hibernate.dialect.MySQLDialect
+                hibernate.show_sql=true
+            	hibernate.format_sql=true
+            	hibernate.hbm2ddl.auto = update
+            </value>
+        </property>
+        <property name="packagesToScan" value="com.mqm.biz.model" />
+    </bean>
+    
+    <!-- 扫描服务层 dao实现层 -->    
+    <context:component-scan base-package="com.mqm.biz.service,com.mqm.biz.dao.impl" />
+</beans>

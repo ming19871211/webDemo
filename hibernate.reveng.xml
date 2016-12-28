@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<type-mapping>
+		<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
+		<sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Boolean"
+			precision="1" not-null="false">
+		</sql-type>
+	</type-mapping>
+	<table-filter match-name="student" match-catalog="test"></table-filter>
+	<table catalog="test" name="sys_user" schema=""
+		class="com.mqm.biz.model.HUser">
+		<primary-key></primary-key>
+	</table>
+	<table catalog="test" name="student" class="com.mqm.biz.model.HStudent"></table>
+</hibernate-reverse-engineering>
