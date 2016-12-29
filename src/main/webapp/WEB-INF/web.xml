@@ -26,6 +26,17 @@
         <servlet-name>springMVC</servlet-name>
         <url-pattern>*.mqm</url-pattern>
     </servlet-mapping>
+    <!-- springSession共享集成 -->
+    <filter>
+	    <filter-name>springSessionRepositoryFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>springSessionRepositoryFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	    <dispatcher>REQUEST</dispatcher>
+	    <dispatcher>ERROR</dispatcher>
+	</filter-mapping>
     <!-- 在过滤器中设置springWeb项目的编码，以防止乱码 -->
     <filter>
     	<filter-name>characterEncodingFilter</filter-name>

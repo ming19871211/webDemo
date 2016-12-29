@@ -21,5 +21,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     当前登陆用户：${userMap['USER_NAME']}---${user.userName}，真实姓名：${userMap.REAL_NAME}---${user.realName}
     <br/>
     ${hUser.realName}---${hUser.userName}，
+    <br/>
   </body>
 </html>

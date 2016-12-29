@@ -27,7 +27,8 @@ public class HelloWorldController {
 	
 	@RequestMapping("/helloWorld.mqm")
     public String helloWorld(HttpServletRequest request,HttpServletResponse response,Model model) {
-        model.addAttribute("message", "Hello World!!!");
+        model.addAttribute("message", "Hello World!!!,sessionId:"+request.getSession().getId()+",port:"+
+    request.getServerPort());
         model.addAttribute("userMap",userService.getUserToMap("402880f25450a9ad015450ae87cd0002"));
         model.addAttribute("user",userService.getUser("402880f25450a9ad015450ae87cd0002"));
         model.addAttribute("hUser",userService.getHUser("402880f25450a9ad015450ae87cd0002"));

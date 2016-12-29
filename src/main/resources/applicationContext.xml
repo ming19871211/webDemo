@@ -6,6 +6,7 @@
     xmlns:tx="http://www.springframework.org/schema/tx"
     xmlns:task="http://www.springframework.org/schema/task"  
 	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
@@ -75,6 +76,15 @@
         <property name="packagesToScan" value="com.mqm.biz.model" />
     </bean>
     
-    <!-- 扫描服务层 dao实现层 -->    
+    <!-- 扫描服务层service dao实现层 -->    
     <context:component-scan base-package="com.mqm.biz.service,com.mqm.biz.dao.impl" />
+    <!-- spring-session共享 -->
+    <context:annotation-config/>
+	<bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>
+	<!-- lettuce方式 -->
+	<!-- <bean id="lettuceConnectionFactory" class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory" 
+		p:host-name="192.168.0.101" p:port="6379"/> -->
+	<!-- jedis方式 --> 
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:host-name="192.168.0.101" p:port="6379" />
 </beans>
