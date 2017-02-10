@@ -44,7 +44,7 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 			<scope>runtime</scope>
-       	</dependency>         	 
+       	</dependency> 
 		<!-- 日志包 -->
 		<dependency>
 		   <groupId>org.slf4j</groupId>
